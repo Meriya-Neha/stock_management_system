@@ -1,0 +1,13 @@
+{
+    "name": "admin/backend",
+
+    "autoload": {
+        "psr-4": {
+            "src\\": "src/"
+        }
+    },
+
+    "require": {
+        "respect/validation": "^2.2"
+    }
+}
