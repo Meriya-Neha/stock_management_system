@@ -12,15 +12,18 @@ class BussinessTypeController{
         $this->bussinessTypeService=new BussinessTypeService();
     } 
     
-    public function bussinessAdd(){
+    public function bussinessAdd(): void
+    {
         try{
         $body=json_decode(file_get_contents('php://input'),true) ?? [];
         $result=$this->bussinessTypeService->bussinessAdd($body);
         Response::created('Bussiness Type Created',$result);
+        return;
         }
         catch(Throwable $e)
         {
             echo ($e);
+            // return [];
         }
     }
     public function bussinessGet():array{

@@ -8,6 +8,8 @@
     },
 
     "require": {
-        "respect/validation": "^2.2"
+        "respect/validation": "^2.2",
+        "vlucas/phpdotenv": "^5.7",
+        "firebase/php-jwt": "^7.1"
     }
 }

@@ -1,8 +1,8 @@
 RewriteEngine On
 
-# Don't rewrite existing files/directories
+# Allow Apache to serve actual files and folders directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Send all API requests to index.php
+# Pass the query string and preserve execution rules
 RewriteRule ^ index.php [QSA,L]

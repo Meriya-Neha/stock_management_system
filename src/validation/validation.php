@@ -46,6 +46,26 @@ class validation{
             return $e->getMessages();
         }
     }
+    public function SupplierValidation(array $data):array
+    {
+        $schema=v::key('company_name',v::stringType()->notEmpty()->length(3,255))
+        ->key('phone_no',v::stringType()->notEmpty()->length(10,10))
+        // ->key('alternate_phone_no',v::stringType()->length(10,10))
+        ->key('email',v::stringType()->notEmpty()->email())
+        ->key('pincode',v::notEmpty()->length(6,6))
+        ->key('address',v::stringType()->notEmpty()->length(3,255))
+        ->key('city',v::stringType()->notEmpty()->length(3,50))
+        ->key('state',v::stringType()->notEmpty()->length(3,50))
+        ->key('country',v::stringType()->notEmpty()->length(3,50))
+        ->key('GST_no',v::notEmpty()->length(0,15));
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
     
 }
 

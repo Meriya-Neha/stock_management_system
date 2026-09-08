@@ -8,6 +8,8 @@ require_once __DIR__. '/../Controller/UserController.php';
 use src\Controller\UserController;
 use src\Controller\AuthController;
 use src\Controller\BussinessTypeController;
+use src\Controller\SupplierController;
+use src\Controller\PurchaseOrderBillController;
 
 
 $router = new Router();
@@ -15,7 +17,8 @@ $router = new Router();
 $userController = new UserController();
 $bussinessController = new BussinessTypeController();
 $authController =new AuthController();
-// $bussinessController = new BussinessTypeController();
+$supplierController = new SupplierController();
+$purchaseOrderBillController = new PurchaseOrderBillController();
 
 
 
@@ -63,5 +66,30 @@ $router->group('/bussiness_type',[
         '/get'=>[$bussinessController,'bussinessGet']
     ]
 ]);
+
+$router->group('/supplier',[
+    'POST'=>[
+        '/add'=>[$supplierController,'createSupplier']
+    ],
+    'GET'=>[
+        '/get'=>[$supplierController,'getSupplier']
+    ],
+    // 'PUT'=>[
+    //     '/update'=>[$supplierController,'updateSupplier']
+    // ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$supplierController,'deleteSupplier']
+    ]
+    
+]);
+
+$router->group('/purchase-order-bills',[
+    'POST'=>[
+        '/add'=>[$purchaseOrderBillController,'createPurchaseOrderBill'],
+    ],
+]);
+
+
+
 
 return $router;

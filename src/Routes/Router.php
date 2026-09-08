@@ -16,6 +16,16 @@ class Router
         $this->routes['GET'][$path] = $handler;
     }
 
+    public function put(string $path, callable|array $handler): void
+    {
+        $this->routes['PUT'][$path] = $handler;
+    }
+
+    public function delete(string $path, callable|array $handler): void
+    {
+        $this->routes['DELETE'][$path] = $handler;
+    }
+
     public function group(string $prefix, array $routes): void
     {
         foreach ($routes as $method => $paths) {

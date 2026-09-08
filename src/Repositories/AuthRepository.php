@@ -14,8 +14,8 @@ class AuthRepository{
     }
     public function authLogin(array $data)
     {
-        echo("repository");
-        print_r($data);
+        // echo("repository");
+        // print_r($data);
         $query="select * from users where email=:email";
 
         try{

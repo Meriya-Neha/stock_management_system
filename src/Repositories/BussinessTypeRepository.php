@@ -48,13 +48,8 @@ class BussinessTypeRepository{
     try {
 
         $stmt = $this->db->prepare($query);
-
-        // Query ko database mein run karo
         $stmt->execute();
-
-        // Database se result nikalo
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         return $results;
 
     } catch (PDOException $e) {
@@ -63,4 +58,5 @@ class BussinessTypeRepository{
     }
 }
 }
+
 ?>
