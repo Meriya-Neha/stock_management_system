@@ -17,9 +17,9 @@ class PurchaseOrderBillController
         $file=$FILES['file'] ?? null;
         $body = json_decode(file_get_contents('php://input'), true) ?? [];
         // $input = json_decode($rawInput, true) ?? [];
-        $fileData = $input['document'] ?? null;
-        unset($input['file']);
-        $response = $this->purchaseOrderBillService->createPurchaseOrderBill($body);
+        $fileData = $body['document'] ?? null;
+        unset($body['file']);
+        $response = $this->purchaseOrderBillService->createPurchaseOrderBill($body,$fileData);
         Response::created('Purchase Order Bill Created', $response);
     }
     catch (\Throwable $e) {
