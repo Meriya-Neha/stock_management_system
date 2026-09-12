@@ -17,14 +17,49 @@ class ReturnReasonService{
             die($e);
         }
     }
+     public function getAll(){
+        return $this->repository->getAll();
+    }
 
-    public function getAll(){
-        try{
-            $result=$this->repository->getAll();
-            return $result;
+     // GET BY ID
+    public function getById(int $id): array
+    {
+        if ($id <= 0) {
+            throw new \Exception('Invalid reason ID');
         }
-        catch(\Throwable $e){
-            die($e);
+
+        $reason = $this->repository->getById($id);
+
+        if (!$reason) {
+            throw new \Exception('Return reason not found');
+        }
+
+        return $reason;
+    }
+
+    // UPDATE
+    public function update(int $id, array $data): array
+    {
+        $this->getById($id);
+
+        if (empty($data['reason'])) {
+            throw new \Exception('reason is required');
+        }
+
+        return $this->repository->update($id, [
+            'reason' => trim($data['reason'])
+        ]);
+    }
+
+    // DELETE
+    public function delete(int $id): void
+    {
+        $this->getById($id);
+
+        $deleted = $this->repository->delete($id);
+
+        if (!$deleted) {
+            throw new \Exception('Failed to delete return reason');
         }
     }
 }

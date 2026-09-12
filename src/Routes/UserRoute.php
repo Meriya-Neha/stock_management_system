@@ -17,6 +17,8 @@ use src\Controller\LocationController;
 use src\Controller\PoOrderItemsController;
 use src\Controller\ReturnReasoncontroller;
 use src\Controller\PoPurchaseReturnController;
+use src\Controller\PoCompanyLossesController;
+use src\Controller\StockOutController;
 
 $router = new Router();
 
@@ -32,6 +34,8 @@ $locationcontroller=new LocationController();
 $poorderitemscontroller=new PoOrderItemsController();
 $returnresoncontroller=new ReturnReasoncontroller();
 $popurchasereturn=new PoPurchaseReturnController();
+$pocompanylosses=new PoCompanyLossesController();
+$stockout =new StockOutController();
 
 
 $router->get('/', function () {
@@ -70,27 +74,33 @@ $router->group('/bussiness_type',[
     'POST'=>[
         '/add'=>[$bussinessController,'bussinessAdd']
     ],
+    'GET'=>[
+        '/get'=>[$bussinessController,'bussinessGet'],
+        '/get/{id}'=>[$bussinessController,'getById']
+    ],
+    'PUT'=>[
+        '/update/{id}'=>[$bussinessController,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$bussinessController,'delete']
+    ]
     
 ]);
 
-$router->group('/bussiness_type',[
-    'GET'=>[
-        '/get'=>[$bussinessController,'bussinessGet']
-    ]
-]);
 
 $router->group('/supplier',[
     'POST'=>[
         '/add'=>[$supplierController,'createSupplier']
     ],
     'GET'=>[
-        '/get'=>[$supplierController,'getSupplier']
+        '/get'=>[$supplierController,'getSupplier'],
+        '/get/{id}'=>[$supplierController,'getById']
     ],
-    // 'PUT'=>[
-    //     '/update'=>[$supplierController,'updateSupplier']
-    // ],
+    'PUT'=>[
+        '/update/{id}'=>[$supplierController,'update']
+    ],
     'DELETE'=>[
-        '/delete/{id}'=>[$supplierController,'deleteSupplier']
+        '/delete/{id}'=>[$supplierController,'delete']
     ]
     
 ]);
@@ -99,6 +109,16 @@ $router->group('/purchase-order-bills',[
     'POST'=>[
         '/add'=>[$purchaseOrderBillController,'createPurchaseOrderBill'],
     ],
+    'GET'=>[
+        '/list'=>[$purchaseOrderBillController,'getAll'],
+        '/get/{id}'=>[$purchaseOrderBillController,'getById']
+    ],
+    'PUT'=>[
+        '/put/{id}'=>[$purchaseOrderBillController,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$purchaseOrderBillController,'delete']
+    ]
 ]);
 
 $router->group('/po-main-category',[
@@ -107,6 +127,13 @@ $router->group('/po-main-category',[
     ],
 'GET'=>[
         '/list'=>[$poMainCategoryController,'getPoMainCategory'],
+        '/get/{id}'=>[$poMainCategoryController,'getById']
+    ],
+    'PUT'=>[
+        '/put/{id}'=>[$poMainCategoryController,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$poMainCategoryController,'delete']
     ]
 ]);
 
@@ -124,8 +151,16 @@ $router->group("/UOM",[
         '/add'=>[$uomController,'createUOM']
     ],
     'GET'=>[
-        '/list'=>[$uomController,'getUOM']
+        '/list'=>[$uomController,'getUOM'],
+        '/get/{id}'=>[$uomController,'getById']
+    ],
+    'PUT'=>[
+        '/put/{id}'=>[$uomController,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$uomController,'delete']
     ]
+    
 ]);
 
 $router->group("/location",[
@@ -133,13 +168,30 @@ $router->group("/location",[
         '/add'=>[$locationcontroller,'createLocation']
     ],
     'GET'=>[
-        '/list'=>[$locationcontroller,'getLocation']
+        '/list'=>[$locationcontroller,'getLocation'],
+        '/get/{id}'=>[$locationcontroller,'getById']
+    ],
+    'PUT'=>[
+        '/update/{id}'=>[$locationcontroller,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$locationcontroller,'delete']
     ]
 ]);
 
 $router->group("/purchase-order-item",[
     'POST'=>[
         '/add'=>[$poorderitemscontroller,'create']
+    ],
+    'GET'=>[
+        '/list'=>[$poorderitemscontroller,'getAll'],
+        '/get/{id}'=>[$poorderitemscontroller,'getById']
+    ],
+    'PUT'=>[
+        '/put/{id}'=>[$poorderitemscontroller,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$poorderitemscontroller,'delete']
     ]
 ]);
 
@@ -148,7 +200,14 @@ $router->group("/return-reason",[
         '/add'=>[$returnresoncontroller,'create']
     ],
     'GET'=>[
-        '/list'=>[$returnresoncontroller,'getAll']
+        '/list'=>[$returnresoncontroller,'getAll'],
+        '/get/{id}'=>[$returnresoncontroller,'getById']
+    ],
+    'PUT'=>[
+        '/put/{id}'=>[$returnresoncontroller,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$returnresoncontroller,'delete']
     ]
 ]);
 
@@ -159,8 +218,50 @@ $router->group("/purchase-return-item",[
     'GET'=>[
         '/list'=>[$popurchasereturn,'getAll'],
         '/{id}'=>[$popurchasereturn,'getById']
+    ],
+    'PUT'=>[
+        '/put/{id}'=>[$popurchasereturn,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$popurchasereturn,'delete']
     ]
 ]);
 
+$router->group("/company-losses",[
+    'POST'=>[
+        '/add'=>[$pocompanylosses,'create']
+    ],
+    'GET'=>[
+        '/list'=>[$pocompanylosses,'getAll'],
+        '/get/{id}'=>[$pocompanylosses,'getById']
+    ],
+    'PUT'=>[
+        '/put/{id}'=>[$pocompanylosses,'update']
+    ],
+    'DELETE'=>[
+        '/delete/{id}'=>[$pocompanylosses,'delete']
+    ]
+]);
+
+$router->group("/stock-out", [
+
+    'POST' => [
+        '/add' => [$stockout, 'create']
+    ],
+
+    'GET' => [
+        '/list' => [$stockout, 'getAll'],
+        '/get/{id}' => [$stockout, 'getById']
+    ],
+
+    'PUT' => [
+        '/update/{id}' => [$stockout, 'update']
+    ],
+
+    'DELETE' => [
+        '/delete/{id}' => [$stockout, 'delete']
+    ]
+
+]);
 
 return $router;

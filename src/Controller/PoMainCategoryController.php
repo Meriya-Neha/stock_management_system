@@ -31,14 +31,76 @@ class PoMainCategoryController
         }
     }
 
-    public function updatePoMainCategory()
+     public function getById(int $id): void
     {
-        try{
-            $input = json_decode(file_get_contents('php://input'), true) ?? [];
-            $response = $this->poMainCategoryService->updatePoMainCategory($input);
-            Response::success('PO Main Category Updated', $response);
-        } catch (\Throwable $e) {
-            die($e->getMessage());
+        try {
+
+            $result = $this->poMainCategoryService->getById($id);
+
+            Response::success(
+                'Category fetched successfully.',
+                $result
+            );
+
+        } catch (\Exception $e) {
+
+            if ($e->getMessage() === 'Category not found') {
+                Response::notFound($e->getMessage());
+            }
+
+            Response::badRequest($e->getMessage());
+        }
+    }
+
+    // PUT
+    public function update(int $id): void
+    {
+        try {
+
+            $data = json_decode(
+                file_get_contents("php://input"),
+                true
+            );
+
+            if (!is_array($data)) {
+                Response::badRequest('Invalid request data');
+            }
+
+            $result = $this->poMainCategoryService->update($id, $data);
+
+            Response::success(
+                'Category updated successfully.',
+                $result
+            );
+
+        } catch (\Exception $e) {
+
+            if ($e->getMessage() === 'Category not found') {
+                Response::notFound($e->getMessage());
+            }
+
+            Response::badRequest($e->getMessage());
+        }
+    }
+
+    // DELETE
+    public function delete(int $id): void
+    {
+        try {
+
+            $this->poMainCategoryService->delete($id);
+
+            Response::success(
+                'Category deleted successfully.'
+            );
+
+        } catch (\Exception $e) {
+
+            if ($e->getMessage() === 'Category not found') {
+                Response::notFound($e->getMessage());
+            }
+
+            Response::badRequest($e->getMessage());
         }
     }
 }

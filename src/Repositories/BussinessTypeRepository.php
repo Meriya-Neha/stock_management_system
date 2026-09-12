@@ -57,6 +57,61 @@ class BussinessTypeRepository{
         die($e->getMessage());
     }
 }
+  // GET BY ID
+    public function getById(int $id): ?array
+    {
+        $sql = "SELECT
+                    id,
+                    bussines_type,
+                    configuration
+                FROM bussiness_type
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
+    // UPDATE
+    public function update(int $id, array $data): ?array
+    {
+        $sql = "UPDATE bussiness_type
+                SET
+                    bussines_type = :bussines_type,
+                    configuration = :configuration
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':bussines_type' => $data['bussines_type'],
+            ':configuration' => $data['configuration'],
+            ':id' => $id
+        ]);
+
+        return $this->getById($id);
+    }
+
+    // DELETE
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM bussiness_type
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
 }
 
 ?>

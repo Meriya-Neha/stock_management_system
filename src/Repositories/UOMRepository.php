@@ -45,4 +45,55 @@ class UOMRepository
             die($e->getMessage());
         }
     }
+    // GET BY ID
+    public function getById(int $id): ?array
+    {
+        $sql = "SELECT
+                    id,
+                    unit_of_measurement
+                FROM uom
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
+    // UPDATE
+    public function update(int $id, array $data): ?array
+    {
+        $sql = "UPDATE uom
+                SET unit_of_measurement = :unit_of_measurement
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':unit_of_measurement' => $data['unit_of_measurement'],
+            ':id' => $id
+        ]);
+
+        return $this->getById($id);
+    }
+
+    // DELETE
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM uom
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
 }

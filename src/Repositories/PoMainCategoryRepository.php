@@ -38,19 +38,51 @@ class PoMainCategoryRepository
             return [];
         }
     }
-    public function update(array $data)
+     public function getById(int $id): ?array
     {
-        $query = "UPDATE po_main_category SET name = :name WHERE id = :id";
-        try {
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([
-                ':name' => $data['name'],
-                ':id' => $data['id']
-            ]);
-            return true;
-        } catch (Throwable $e) {
-            die($e->getMessage());
-            return false;
-        }
+        $sql = "SELECT id, name
+                FROM po_main_category
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
+    // UPDATE
+    public function update(int $id, string $name): ?array
+    {
+        $sql = "UPDATE po_main_category
+                SET name = :name
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':name' => $name,
+            ':id' => $id
+        ]);
+
+        return $this->getById($id);
+    }
+
+    // DELETE
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM po_main_category
+                WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->rowCount() > 0;
     }
 }

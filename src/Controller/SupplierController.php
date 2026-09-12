@@ -33,14 +33,77 @@ class SupplierController{
         return $result;
     }
 
-    public function deleteSupplier($id):void
+ // GET BY ID
+    public function getById(int $id): void
     {
-        try{
-            $body=json_decode(file_get_contents('php://input'),true) ?? [];
-            $result=$this->supplierService->deleteSupplier($body);
-            Response::success('Supplier Deleted Successfully',$result);
-        } catch (\Throwable $e) {
-            die($e->getMessage());
+        try {
+
+            $result = $this->supplierService->getById($id);
+
+            Response::success(
+                'Supplier fetched successfully.',
+                $result
+            );
+
+        } catch (\Exception $e) {
+
+            if ($e->getMessage() === 'Supplier not found') {
+                Response::notFound($e->getMessage());
+            }
+
+            Response::badRequest($e->getMessage());
+        }
+    }
+
+    // PUT
+    public function update(int $id): void
+    {
+        try {
+
+            $data = json_decode(
+                file_get_contents("php://input"),
+                true
+            );
+
+            if (!is_array($data)) {
+                Response::badRequest('Invalid request data');
+            }
+
+            $result = $this->supplierService->update($id, $data);
+
+            Response::success(
+                'Supplier updated successfully.',
+                $result
+            );
+
+        } catch (\Exception $e) {
+
+            if ($e->getMessage() === 'Supplier not found') {
+                Response::notFound($e->getMessage());
+            }
+
+            Response::badRequest($e->getMessage());
+        }
+    }
+
+    // DELETE
+    public function delete(int $id): void
+    {
+        try {
+
+            $this->supplierService->delete($id);
+
+            Response::success(
+                'Supplier deleted successfully.'
+            );
+
+        } catch (\Exception $e) {
+
+            if ($e->getMessage() === 'Supplier not found') {
+                Response::notFound($e->getMessage());
+            }
+
+            Response::badRequest($e->getMessage());
         }
     }
 
