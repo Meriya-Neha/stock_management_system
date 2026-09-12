@@ -36,12 +36,35 @@ class Router
     }
 
     public function dispatch(string $method, string $path): bool
-    {
-        if (isset($this->routes[$method][$path])) {
-            call_user_func($this->routes[$method][$path]);
-            return true;
-        }
-
+{
+    if (!isset($this->routes[$method])) {
         return false;
     }
+
+    foreach ($this->routes[$method] as $route => $handler) {
+
+        // Convert /{id} into a dynamic route pattern
+        $pattern = preg_replace(
+            '#\{[^/]+\}#',
+            '([^/]+)',
+            $route
+        );
+
+        $pattern = '#^' . $pattern . '$#';
+
+        if (preg_match($pattern, $path, $matches)) {
+
+            array_shift($matches);
+
+            call_user_func(
+                $handler,
+                ...$matches
+            );
+
+            return true;
+        }
+    }
+
+    return false;
+}
 }

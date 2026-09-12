@@ -14,7 +14,9 @@ use src\Controller\PoMainCategoryController;
 use src\Controller\RoleController;
 use src\Controller\UOMController;
 use src\Controller\LocationController;
-
+use src\Controller\PoOrderItemsController;
+use src\Controller\ReturnReasoncontroller;
+use src\Controller\PoPurchaseReturnController;
 
 $router = new Router();
 
@@ -27,7 +29,9 @@ $poMainCategoryController = new PoMainCategoryController();
 $roleController = new RoleController();
 $uomController=new UOMController();
 $locationcontroller=new LocationController();
-
+$poorderitemscontroller=new PoOrderItemsController();
+$returnresoncontroller=new ReturnReasoncontroller();
+$popurchasereturn=new PoPurchaseReturnController();
 
 
 $router->get('/', function () {
@@ -130,6 +134,31 @@ $router->group("/location",[
     ],
     'GET'=>[
         '/list'=>[$locationcontroller,'getLocation']
+    ]
+]);
+
+$router->group("/purchase-order-item",[
+    'POST'=>[
+        '/add'=>[$poorderitemscontroller,'create']
+    ]
+]);
+
+$router->group("/return-reason",[
+    'POST'=>[
+        '/add'=>[$returnresoncontroller,'create']
+    ],
+    'GET'=>[
+        '/list'=>[$returnresoncontroller,'getAll']
+    ]
+]);
+
+$router->group("/purchase-return-item",[
+    'POST'=>[
+        '/add'=>[$popurchasereturn,'createPurchaseReturn']
+    ],
+    'GET'=>[
+        '/list'=>[$popurchasereturn,'getAll'],
+        '/{id}'=>[$popurchasereturn,'getById']
     ]
 ]);
 
