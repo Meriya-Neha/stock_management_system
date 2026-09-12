@@ -10,6 +10,10 @@ use src\Controller\AuthController;
 use src\Controller\BussinessTypeController;
 use src\Controller\SupplierController;
 use src\Controller\PurchaseOrderBillController;
+use src\Controller\PoMainCategoryController;
+use src\Controller\RoleController;
+use src\Controller\UOMController;
+use src\Controller\LocationController;
 
 
 $router = new Router();
@@ -19,6 +23,10 @@ $bussinessController = new BussinessTypeController();
 $authController =new AuthController();
 $supplierController = new SupplierController();
 $purchaseOrderBillController = new PurchaseOrderBillController();
+$poMainCategoryController = new PoMainCategoryController();
+$roleController = new RoleController();
+$uomController=new UOMController();
+$locationcontroller=new LocationController();
 
 
 
@@ -89,7 +97,41 @@ $router->group('/purchase-order-bills',[
     ],
 ]);
 
+$router->group('/po-main-category',[
+    'POST'=>[
+        '/add'=>[$poMainCategoryController,'createPoMainCategory'],
+    ],
+'GET'=>[
+        '/list'=>[$poMainCategoryController,'getPoMainCategory'],
+    ]
+]);
 
+$router->group("/role", [
+    'POST' => [
+        '/add' => [$roleController, 'createRole'],
+    ],
+    'GET' => [
+        '/list' => [$roleController, 'getRoles'],
+    ]
+]);
+
+$router->group("/UOM",[
+    'POST'=>[
+        '/add'=>[$uomController,'createUOM']
+    ],
+    'GET'=>[
+        '/list'=>[$uomController,'getUOM']
+    ]
+]);
+
+$router->group("/location",[
+    'POST'=>[
+        '/add'=>[$locationcontroller,'createLocation']
+    ],
+    'GET'=>[
+        '/list'=>[$locationcontroller,'getLocation']
+    ]
+]);
 
 
 return $router;

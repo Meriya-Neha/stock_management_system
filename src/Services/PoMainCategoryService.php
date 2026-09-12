@@ -15,4 +15,12 @@ class PoMainCategoryService
     {
         return $this->poMainCategoryRepository->create($data);
     }
+    public function getPoMainCategory()
+    {
+        return $this->poMainCategoryRepository->getAll();
+    }
+    public function updatePoMainCategory(array $data)
+    {
+        return $this->poMainCategoryRepository->update($data);
+    }
 }

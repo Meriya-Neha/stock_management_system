@@ -73,7 +73,7 @@ class AuthService
         return [    
             'access_token'=>$token,
             'refresh_token'=>$refresh_token,
-            'user_data'=>$data
+            'user_data'=>$login[0]
         ];
     }
 }

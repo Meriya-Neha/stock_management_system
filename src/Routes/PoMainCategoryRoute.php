@@ -2,12 +2,13 @@
 namespace src\Routes;
 use src\controller\PoMainCategoryController;
 
-class PoMainCategoryRoute
-{
-    private PoMainCategoryController $poMainCategoryController;
+$router= new Router();
+$poMainCategoryController= new PoMainCategoryController();
 
-    public function __construct()
-    {
-        $this->poMainCategoryController = new PoMainCategoryController();
-    }
-}
+$router->group('/po-main-category',[
+    'POST'=>[
+        '/add'=>[$poMainCategoryController,'createPoMainCategory'],
+    ],
+]);
+
+?>

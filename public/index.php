@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: http://192.168.1.7:5173');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $router = require __DIR__ . '/../src/Routes/UserRoute.php';
+// $router = require __DIR__ . '/../src/Routes/PoMainCategoryRoute.php';
 // $router = require __DIR__ . '/../src/Routes/PurchaseOrderBillRoute.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
