@@ -6,6 +6,7 @@ use Exception;
 use src\validation\validation;
 use src\Repositories\AuthRepository;
 use src\Utils\Response;
+use src\Utils\JwtHelper;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Throwable;
@@ -19,8 +20,10 @@ class AuthService
 {
     private validation $validation;
     private AuthRepository $authRepository;
+    private JwtHelper $jwtHelper;
     public function __construct()
     {
+        $this->jwtHelper= new JwtHelper;
         $this->validation = new validation;
         $this->authRepository = new AuthRepository;
     }
@@ -35,35 +38,15 @@ class AuthService
             $hash_pass=$login[0]['password'];
             $verify=password_verify($raw_pass,$hash_pass);
             if($verify){
-                // echo ("passsword  correct");
+                echo ("passsword  correct");
             }
             else{
-                // throw new Exception("Incorrect passwod");
-                // Response::unauthorized('unauthorizes user');
+                throw new Exception("Incorrect passwod");
+                Response::unauthorized('unauthorizes user');
             }
-            $jwt_access = $_ENV['jwt_access'];
-            $issue = time();
-            $expire = $issue + 3600; 
+            $jwt_access=$this->jwtHelper->generateAccessToken($login[0]);
+            $jwt_refresh=$this->jwtHelper->generateRefreshToken($login[0]);
 
-            $payload = [
-                'iat'=>$issue,
-                'exp'=>$expire,
-                'user_id'=>$login[0]['id'],
-                'user_email'=>$login[0]['email']
-            ];
-
-            $token=JWT::encode($payload,$jwt_access,'HS256');
-            // echo ($token);
-
-            $jwt_refresh = $_ENV['jwt_refresh'];
-            // $payload_refresh = [
-            //     'iat'=>$issue,
-            //     'exp'=>$expire + 604800, 
-            //     'user_id'=>$login[0]['id'],
-            //     'user_email'=>$login[0]['email']
-            // ];
-            $refresh_token=JWT::encode($payload,$jwt_refresh,'HS256');
-            // echo ($refresh_token);
         }
         catch (Throwable $e) {
             Response::unauthorized('unauthorizes user');
@@ -71,8 +54,8 @@ class AuthService
         }
 
         return [    
-            'access_token'=>$token,
-            'refresh_token'=>$refresh_token,
+            'access_token'=>$jwt_access,
+            'refresh_token'=>$jwt_refresh,
             'user_data'=>$login[0]
         ];
     }

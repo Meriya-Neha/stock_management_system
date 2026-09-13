@@ -3,13 +3,16 @@ namespace src\Controller;
 
 use src\Services\AuthService;
 use src\Utils\Response;
+use src\Utils\JwtHelper;
 use Throwable;
 
 class AuthController{
     private AuthService $authService;
+    private JwtHelper $jwtHelper;
     public function __construct()
     {
         $this->authService=new AuthService();
+        $this->jwtHelper=new JwtHelper();
     }
 
     public function authLogin(){
@@ -21,10 +24,82 @@ class AuthController{
         catch(Throwable $e){
             die($e->getMessage());
         }
-
-
-
     }
+    public function refresh(): void
+{
+    try {
+
+        // 1. Get request headers
+        $headers = getallheaders();
+
+        // 2. Authorization header check
+        $authorization = $headers['Authorization'] ?? '';
+
+        if (empty($authorization)) {
+            Response::unauthorized(
+                'Authorization header required'
+            );
+            return;
+        }
+
+        // 3. Check Bearer
+        if (!str_starts_with($authorization, 'Bearer ')) {
+            Response::unauthorized(
+                'Bearer token required'
+            );
+            return;
+        }
+
+        // 4. Get refresh token
+        $refreshToken = substr($authorization, 7);
+
+        if (empty($refreshToken)) {
+            Response::unauthorized(
+                'Refresh token required'
+            );
+            return;
+        }
+
+        // 5. Verify / decode refresh token
+        $decoded = $this->jwtHelper
+    ->decodeRefreshToken(
+        $refreshToken
+    );
+
+        // 6. Check token type
+        if (
+            !isset($decoded->type) ||
+            $decoded->type !== 'refresh'
+        ) {
+            Response::unauthorized(
+                'Invalid refresh token'
+            );
+            return;
+        }
+
+        // 7. Get user ID
+        $userId = $decoded->user_id;
+
+        // 8. Generate new access token
+        $accessToken = $this->jwtHelper->generateAccessToken([
+            'id' => $userId
+        ]);
+
+        // 9. Return new access token
+        Response::success(
+            'Access token refreshed successfully',
+            [
+                'access_token' => $accessToken
+            ]
+        );
+
+    } catch (\Throwable $e) {
+
+    Response::unauthorized(
+        $e->getMessage()
+    );
+}
+}
 }
 
 ?>

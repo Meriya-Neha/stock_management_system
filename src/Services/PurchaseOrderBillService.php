@@ -3,13 +3,16 @@
 namespace src\Services;
 
 use src\Repositories\PurchaseOrderBillRepository;
+use src\validation\validation;
 
 class PurchaseOrderBillService
 {
     private PurchaseOrderBillRepository $purchaseOrderBillRepository;
+    private validation $validation;
 
     public function __construct()
     {
+
         $this->purchaseOrderBillRepository =
             new PurchaseOrderBillRepository();
     }
@@ -61,9 +64,11 @@ class PurchaseOrderBillService
 
             // DB me image ka path
             $data['bill_image'] = $billImagePath;
-
-            return $this->purchaseOrderBillRepository
+            $validation=$this->validation->Pobill($data);
+            $result= $this->purchaseOrderBillRepository
                 ->createPurchaseOrderBill($data);
+
+            return $result;
         } catch (\Throwable $e) {
 
             throw $e;

@@ -13,7 +13,8 @@ class UOMService
     }
     public function createUOM(array $data)
     {
-        return $this->uomRepository->create($data);
+        $result= $this->uomRepository->create($data);
+        return $result;
     }
 
     public function getUOM()

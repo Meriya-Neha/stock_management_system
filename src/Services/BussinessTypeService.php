@@ -15,7 +15,7 @@ class BussinessTypeService
         $this->bussinessTypeRepository =new BussinessTypeRepository();
         $this->validation =new validation();
     }
-    public function bussinessAdd($data)
+    public function bussinessAdd(array $data): void
     {
         $this->validation->BussinessValidation($data);
         $this->bussinessTypeRepository->bussinessAdd($data);

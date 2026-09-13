@@ -1,15 +1,19 @@
 <?php
 namespace src\Services;
 use src\Repositories\ReturnReasonRepository;
+use src\validation\validation;
 
 class ReturnReasonService{
     private ReturnReasonRepository $repository;
+    private validation $validation;
     public function __construct()
     {
         $this->repository = new ReturnReasonRepository();
+        $this->validation= new validation();
     }
     public function create(array $data){
         try{
+            // $validation=$this->validation->Re
             $result=$this->repository->create($data);
             return $result;
         }

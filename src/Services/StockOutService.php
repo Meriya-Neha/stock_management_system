@@ -3,13 +3,16 @@
 namespace src\Services;
 
 use src\Repositories\StockOutRepository;
+use src\validation\validation;
 
 class StockOutService
 {
     private StockOutRepository $stockOutRepository;
+ 
 
     public function __construct() {
         $this->stockOutRepository =new StockOutRepository();
+   
     }
 
 

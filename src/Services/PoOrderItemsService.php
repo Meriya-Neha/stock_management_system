@@ -4,14 +4,18 @@ namespace src\Services;
 
 use App\Repositories\PurchaseOrderBillProductRepository;
 use src\Repositories\PoOrderItemRepository;
+use src\validation\validation;
 
 class PoOrderItemsService
 {
     private PoOrderItemRepository $repository;
+    private validation $validation;
 
     public function __construct()
     {
         $this->repository = new PoOrderItemRepository();
+        $this->validation=new validation();
+
     }
 
     public function create(array $data): array

@@ -14,13 +14,13 @@ class SupplierService{
         $this->supplierRepository=new SupplierRepository();
         $this->validation=new validation();
     }
-    public function createSupplier($data)
+    public function createSupplier(array $data)
     {
         try{
             if(empty($data['company_name']) || empty($data['phone_no']) || empty($data['email']) || empty($data['pincode']) || empty($data['address']) || empty($data['city']) || empty($data['state']) || empty($data['country']) || empty($data['GST_no'])){
                 throw new \Exception('All fields are required');
             }
-            $valudationResult = $this->validation->SupplierValidation($data);
+            $valudationResult = $this->validation->SupplierValidation( $data);
             if (!empty($valudationResult)) {
                  Response::badRequest(  "VALIDATION ERROR", $valudationResult);
             }

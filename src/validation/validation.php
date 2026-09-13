@@ -66,6 +66,120 @@ class validation{
             return $e->getMessages();
         }
     }
+     public function Main_category(array $data):array
+    {
+        $schema=v::key('name',v::stringType()->notEmpty()->length(1,255));
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+     public function UOMValidation(array $data):array
+    {
+        $schema=v::key('unit_of_measurement',v::stringType()->notEmpty()->length(3,255));
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+     public function LocationValidation(array $data):array
+    {
+        $schema=v::key('name',v::stringType()->notEmpty()->length(3,255));
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+
+    public function Pobill(array $data):array
+    {
+        $schema=v::key('invoice_no',v::stringType()->notEmpty()->length(1,400))
+        ->key('total_quantity',v::notEmpty()->length(1))
+        ->key('total_price',v::notEmpty()->length(1))
+        ->key('transaction_ref_no',v::stringType()->notEmpty()->length(1))
+        ->key('total_taxable_value',v::notEmpty()->length(1))
+        ->key('grand_total',v::notEmpty()->length(1))
+        ->key('notes',v::stringType()->notEmpty()->length(3,50))
+        ->key('bill_date',v::notEmpty()->length(0,15))
+        ->key('payment_date',v::notEmpty()->length(0,15));
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+
+     public function PolossesValidation(array $data):array
+    {
+        $schema=v::key('loss_quantity',v::notEmpty()->length(1,10))
+        ->key('loss_amount',v::notEmpty()->length(1,15));
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+
+    public function PoPurchaseReturnValidation(array $data):array
+    {
+        $schema=v::key('quantity',v::notEmpty()->length(1,255))
+        ->key('purchase_price',v::notEmpty()->length(1,255))
+        ->key('remain_amount',v::notEmpty()->length(1,255))
+        ->key('transaction_ref_no',v::stringType()->notEmpty()->length(3,255))
+        ->key('payment_date',v::notEmpty());
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+    public function PoItems(array $data):array
+    {
+        
+        $schema=v::key('quantity',v::notEmpty()->length(1,255))
+        ->key('product_name',v::stringType()->notEmpty()->length(3,255))
+        ->key('purchase_price',v::notEmpty()->length(1,255))
+        ->key('total_price',v::notEmpty()->length(1,255))
+        ->key('purchase_date',v::notEmpty());
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+    public function PoStockOut(array $data):array
+    {
+        
+        $schema=v::key('quantity',v::notEmpty()->length(1,255))
+        ->key('stock_out_date',v::notEmpty());
+        try{
+            $schema->assert($data);
+            return [];
+        }
+        catch (\Respect\Validation\Exceptions\NestedValidationException $e) {
+            return $e->getMessages();
+        }
+    }
+
+
+    
     
 }
 

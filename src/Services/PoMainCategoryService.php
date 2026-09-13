@@ -1,19 +1,24 @@
 <?php
 namespace src\Services;
 use src\Repositories\PoMainCategoryRepository;
+use src\validation\validation;
 
 class PoMainCategoryService
 {
     private PoMainCategoryRepository $poMainCategoryRepository;
+    private validation $validation;
 
     public function __construct()
     {
         $this->poMainCategoryRepository = new PoMainCategoryRepository();
+        $this->validation= new validation();
     }
 
     public function createPoMainCategory(array $data)
     {
-        return $this->poMainCategoryRepository->create($data);
+        $validation=$this->validation->Main_category($data);
+        $result= $this->poMainCategoryRepository->create($data);
+        return $result;
     }
     public function getPoMainCategory()
     {

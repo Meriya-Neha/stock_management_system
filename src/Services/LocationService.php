@@ -1,17 +1,22 @@
 <?php
 namespace src\Services;
 use src\Repositories\LocationRepository;
+use src\validation\validation;
 
 
 class LocationService{
     private LocationRepository $locationRepository;
+    private validation $validation;
 
     public function __construct()
     {
         $this->locationRepository=new LocationRepository;
+        $this->validation=new validation();
     }
     public function createLocation(array $data){
-        return $this->locationRepository->createLocation($data);
+        $validation=$this->validation->LocationValidation($data);
+        $result= $this->locationRepository->createLocation($data);
+        return $result;
 
     }
 

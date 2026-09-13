@@ -66,7 +66,8 @@ $router->group('/user', [
 
 $router->group('/auth',[
     'POST'=>[
-        '/login'=>[$authController,'authLogin']
+        '/login'=>[$authController,'authLogin'],
+        '/refresh_token'=>[$authController,'refresh']
     ]
 ]);
 

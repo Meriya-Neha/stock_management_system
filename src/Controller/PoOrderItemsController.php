@@ -92,10 +92,22 @@ class PoOrderItemsController{
     {
         try {
 
-            $data = json_decode(
-                file_get_contents("php://input"),
-                true
-            );
+            $data = json_decode(file_get_contents("php://input"),true);
+            print_r($data);
+//             $raw = file_get_contents("php://input");
+
+// echo "<pre>";
+// echo "RAW DATA:\n";
+// var_dump($raw);
+
+// echo "\n\nDECODED DATA:\n";
+// $data = json_decode($raw, true);
+// var_dump($data);
+
+// echo "\n\nJSON ERROR:\n";
+// var_dump(json_last_error_msg());
+
+// exit;
 
             if (!is_array($data)) {
                 Response::badRequest('Invalid request data');
