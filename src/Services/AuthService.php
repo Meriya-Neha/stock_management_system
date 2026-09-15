@@ -38,7 +38,7 @@ class AuthService
             $hash_pass=$login[0]['password'];
             $verify=password_verify($raw_pass,$hash_pass);
             if($verify){
-                echo ("passsword  correct");
+                // echo ("passsword  correct");
             }
             else{
                 throw new Exception("Incorrect passwod");

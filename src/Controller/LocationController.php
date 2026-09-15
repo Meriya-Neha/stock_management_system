@@ -109,6 +109,7 @@
 
 namespace src\Controller;
 
+use Firebase\JWT\ExpiredException;
 use src\Services\LocationService;
 use src\Utils\Response;
 use src\Utils\JwtHelper;
@@ -143,10 +144,17 @@ class LocationController
                 'location added successfully',
                 $result
             );
-
         } catch (\Throwable $e) {
 
             throw new \Exception($e);
+        } catch (ExpiredException $e) {
+
+            http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
         }
     }
 
@@ -164,10 +172,17 @@ class LocationController
                 'data found successfully',
                 $result
             );
-
         } catch (\Throwable $e) {
 
             throw new \Exception($e);
+        } catch (ExpiredException $e) {
+
+            http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
         }
     }
 
@@ -186,7 +201,6 @@ class LocationController
                 'Location fetched successfully.',
                 $result
             );
-
         } catch (\Exception $e) {
 
             if ($e->getMessage() === 'Location not found') {
@@ -194,6 +208,14 @@ class LocationController
             }
 
             Response::badRequest($e->getMessage());
+        } catch (ExpiredException $e) {
+
+            http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
         }
     }
 
@@ -220,7 +242,6 @@ class LocationController
                 'Location updated successfully.',
                 $result
             );
-
         } catch (\Exception $e) {
 
             if ($e->getMessage() === 'Location not found') {
@@ -228,6 +249,14 @@ class LocationController
             }
 
             Response::badRequest($e->getMessage());
+        } catch (ExpiredException $e) {
+
+            http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
         }
     }
 
@@ -243,15 +272,20 @@ class LocationController
             Response::success(
                 'Location deleted successfully.'
             );
-
         } catch (\Exception $e) {
 
             if ($e->getMessage() === 'Location not found') {
                 Response::notFound($e->getMessage());
             }
             Response::badRequest($e->getMessage());
+        } catch (ExpiredException $e) {
+
+            http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
         }
     }
 }
-
-?>

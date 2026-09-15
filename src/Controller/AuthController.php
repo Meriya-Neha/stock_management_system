@@ -4,6 +4,7 @@ namespace src\Controller;
 use src\Services\AuthService;
 use src\Utils\Response;
 use src\Utils\JwtHelper;
+use Firebase\JWT\ExpiredException;
 use Throwable;
 
 class AuthController{
@@ -99,6 +100,7 @@ class AuthController{
         $e->getMessage()
     );
 }
+ 
 }
 }
 

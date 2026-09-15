@@ -12,7 +12,7 @@ class SupplierRepository{
     }
     public function createSupplier($data)
     {
-        print_r($data['GST_no']);
+        // print_r($data['GST_no']);
 
         try{
         $query="INSERT INTO supplier

@@ -4,14 +4,19 @@ namespace src\Controller;
 
 use src\Services\PoCompanyLossesService;
 use src\Utils\Response;
+use src\Utils\JwtHelper;
+use Firebase\JWT\ExpiredException;
 
 class PoCompanyLossesController
 {
     private PoCompanyLossesService $service;
+    private JwtHelper $jwtHelper;
 
     public function __construct()
     {
         $this->service =new  PoCompanyLossesService();
+        $this->jwtHelper = new JwtHelper();
+        
     }
 
 
@@ -19,7 +24,7 @@ class PoCompanyLossesController
     public function create(): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $data = json_decode(
                 file_get_contents("php://input"),
                 true
@@ -44,6 +49,16 @@ class PoCompanyLossesController
                 $e->getMessage()
             );
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
 
@@ -51,7 +66,7 @@ class PoCompanyLossesController
     public function getAll(): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $result = $this->service->getAll();
 
             Response::success(
@@ -65,6 +80,16 @@ class PoCompanyLossesController
                 'Failed to fetch loss records.'
             );
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
 
@@ -72,7 +97,7 @@ class PoCompanyLossesController
     public function getById(int $id): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $result = $this->service->getById($id);
 
             Response::success(
@@ -92,6 +117,16 @@ class PoCompanyLossesController
                 $e->getMessage()
             );
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
 
@@ -99,7 +134,7 @@ class PoCompanyLossesController
     public function update(int $id): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $data = json_decode(
                 file_get_contents("php://input"),
                 true
@@ -127,6 +162,16 @@ class PoCompanyLossesController
                 $e->getMessage()
             );
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
 
@@ -134,7 +179,7 @@ class PoCompanyLossesController
     public function delete(int $id): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $this->service->delete($id);
 
             Response::success(
@@ -147,5 +192,15 @@ class PoCompanyLossesController
                 $e->getMessage()
             );
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 }

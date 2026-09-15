@@ -4,18 +4,22 @@ namespace src\Controller;
 
 use src\Services\PoPurchaseReturnService;
 use src\Utils\Response;
+use  src\Utils\JwtHelper;
+use Firebase\JWT\ExpiredException;
 
 class PoPurchaseReturnController
 {
     private PoPurchaseReturnService $service;
+    private JwtHelper $jwtHelper;
     public function __construct()
     {
         $this->service = new PoPurchaseReturnService();
+        $this->jwtHelper= new JwtHelper();
     }
     public function createPurchaseReturn()
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $input = json_decode(file_get_contents("php://input"), true);
             if (!$input) {
                 echo json_encode([
@@ -38,11 +42,21 @@ class PoPurchaseReturnController
                 "message" => $e->getMessage()
             ]);
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
     public function getAll(): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $returns = $this->service->getAll();
             Response::success('Purchase returns fetched successfully.', $returns);
         } catch (\Exception $e) {
@@ -53,7 +67,7 @@ class PoPurchaseReturnController
     public function getById(int $id): void
 {
     try {
-
+        $user=$this->jwtHelper->check();
         if ($id <= 0) {
             Response::badRequest(
                 'Invalid purchase return ID.'
@@ -74,5 +88,15 @@ class PoPurchaseReturnController
             $e->getMessage()
         );
     }
+    catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
 }
 }

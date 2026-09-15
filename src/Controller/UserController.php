@@ -24,6 +24,7 @@ class UserController{
             echo($e);
         }
     }
+    
 
 }
 

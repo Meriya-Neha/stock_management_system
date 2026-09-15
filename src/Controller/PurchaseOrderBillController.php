@@ -4,14 +4,18 @@ namespace src\Controller;
 
 use src\Services\PurchaseOrderBillService;
 use src\Utils\Response;
+use src\Utils\JwtHelper;
+use Firebase\JWT\ExpiredException;
 
 class PurchaseOrderBillController
 {
     private PurchaseOrderBillService $purchaseOrderBillService;
+    private JwtHelper $jwtHelper;
 
     public function __construct()
     {
         $this->purchaseOrderBillService = new PurchaseOrderBillService();
+        $this->jwtHelper=new JwtHelper();
     }
 
     // public function createPurchaseOrderBill()
@@ -43,6 +47,7 @@ class PurchaseOrderBillController
     public function createPurchaseOrderBill()
     {
         try {
+            $user=$this->jwtHelper->check();
 
             $input = $_POST;
 
@@ -62,11 +67,21 @@ class PurchaseOrderBillController
 
             die($e->getMessage());
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
     public function getAll(): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $result = $this->purchaseOrderBillService->getAll();
 
             Response::success(
@@ -75,11 +90,22 @@ class PurchaseOrderBillController
             );
 
         } catch (\Exception $e) {
-
+            
+            Response::badRequest( $e->getMessage());
             Response::internalError(
                 'Failed to fetch purchase order bills.'
             );
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
     // GET BY ID
@@ -102,13 +128,23 @@ class PurchaseOrderBillController
 
             Response::badRequest($e->getMessage());
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
     // PUT
     public function update(int $id): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $data = json_decode(
                 file_get_contents("php://input"),
                 true
@@ -133,13 +169,23 @@ class PurchaseOrderBillController
 
             Response::badRequest($e->getMessage());
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
     // DELETE
     public function delete(int $id): void
     {
         try {
-
+            $user=$this->jwtHelper->check();
             $this->purchaseOrderBillService->delete($id);
 
             Response::success(
@@ -154,6 +200,16 @@ class PurchaseOrderBillController
 
             Response::badRequest($e->getMessage());
         }
+        catch (ExpiredException $e) {
+
+    http_response_code(401);
+
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+
+}
     }
 
 }

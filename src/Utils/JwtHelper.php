@@ -4,14 +4,14 @@ namespace src\Utils;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
+use Firebase\JWT\ExpiredException;
 class JwtHelper
 {
      private string $algorithm;
 
     public function __construct()
     {
-        $this->algorithm = $_ENV['JWT_ALGORITHM'];
+        $this->algorithm = $_ENV['JWT_ALGORITHM']?? "HS256";
     }
 
     // Access Token
@@ -57,6 +57,14 @@ class JwtHelper
     // Access Token Decode
     public function decodeAccessToken(string $token): object
     {
+        // return JWT::decode(
+        //     $token,
+        //     new Key(
+        //         $_ENV['jwt_access'],
+        //         $this->algorithm
+        //     )
+        // );
+        try {
         return JWT::decode(
             $token,
             new Key(
@@ -64,6 +72,19 @@ class JwtHelper
                 $this->algorithm
             )
         );
+        
+    } catch (ExpiredException $e) {
+
+        http_response_code(401);
+
+        echo json_encode([
+            "status" => 401,
+            "message" => "Access token has expired",
+            "data" => []
+        ]);
+
+        exit;
+    }
     }
 
     // Refresh Token Decode
