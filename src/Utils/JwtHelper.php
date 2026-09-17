@@ -57,13 +57,6 @@ class JwtHelper
     // Access Token Decode
     public function decodeAccessToken(string $token): object
     {
-        // return JWT::decode(
-        //     $token,
-        //     new Key(
-        //         $_ENV['jwt_access'],
-        //         $this->algorithm
-        //     )
-        // );
         try {
         return JWT::decode(
             $token,

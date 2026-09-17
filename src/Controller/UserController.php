@@ -5,6 +5,7 @@ use src\Services\UserService;
 use src\Utils\Response;
 use Throwable;
 
+
 class UserController{
     private UserService  $userService;
     public function __construct()

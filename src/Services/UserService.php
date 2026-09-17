@@ -5,6 +5,7 @@ namespace src\Services;
 use src\Repositories\UserRepository;
 use src\Validation\validation;
 use Throwable;
+use src\Utils\RateLimiter;
 
 class UserService
 {
@@ -20,12 +21,9 @@ class UserService
     public function creteUser(array $data): void
     {
         try {
-            print_r($data);
-            print_r($data['password']);
-
+            $username=$data['email'];
+            RateLimiter::check('/user/add',$username);
             $this->validation->UserValidation($data);
-            // $password=$data['passwod'];
-            // print_r($password);
             $hash_pass=password_hash($data['password'],PASSWORD_DEFAULT);
             $data['password']=$hash_pass;
             $this->userRepository->creteUser($data);

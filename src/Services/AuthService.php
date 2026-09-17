@@ -7,6 +7,7 @@ use src\validation\validation;
 use src\Repositories\AuthRepository;
 use src\Utils\Response;
 use src\Utils\JwtHelper;
+use src\Utils\RateLimiter;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Throwable;
@@ -31,6 +32,8 @@ class AuthService
     {
         try {
             // print_r($data);
+            $username=$data['email'];
+            RateLimiter::check('/auth/login',$username);
             $validate=$this->validation->AuthValidation($data);
             $login = $this->authRepository->authLogin($data);
             // print_r($login);

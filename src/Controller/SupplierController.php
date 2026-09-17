@@ -20,20 +20,14 @@ class SupplierController{
         try{
             $user=$this->jwtHelper->check();
             $body=json_decode(file_get_contents('php://input'),true) ?? [];
-            $result=$this->supplierService->createSupplier($body);
-            Response::created('Supplier Created',$result);
+            $this->supplierService->createSupplier($body);
+            Response::created('Supplier Created');
         } catch (\Throwable $e) {
             die($e->getMessage());
         }
         catch (ExpiredException $e) {
 
-    http_response_code(401);
-
-            echo json_encode([
-                "success" => false,
-                "message" => $e->getMessage()
-            ]);
-
+    echo  $e->getMessage();
 }
     }
 

@@ -85,6 +85,7 @@ class AuthController{
         $accessToken = $this->jwtHelper->generateAccessToken([
             'id' => $userId
         ]);
+        echo("helllo");
 
         // 9. Return new access token
         Response::success(
@@ -95,7 +96,15 @@ class AuthController{
         );
 
     } catch (\Throwable $e) {
+    exit();
+    http_response_code(401);
 
+echo json_encode([
+    "status" => 401,
+    "message" => "Signature verification failed",
+    "data" => []
+]);
+exit;
     Response::unauthorized(
         $e->getMessage()
     );
