@@ -91,20 +91,24 @@ class PoOrderItemRepository
     }
      // GET ALL
     public function getAll(): array
-    {
+     {
         $sql = "SELECT
-                    id,
-                    purchase_order_bill_id,
-                    product_name,
-                    product_main_category_id,
-                    item_location_id,
-                    uom_id,
-                    quantity,
-                    purchase_price,
-                    total_price,
-                    purchase_date
-                FROM purchase_order_items
-                ORDER BY id DESC";
+        poi.id,
+        poi.product_name,
+        pob.invoice_no,
+        poc.name AS category_name,
+        loc.name AS location_name,
+        uom.unit_of_measurement AS uom_name,
+        poi.quantity,
+        poi.purchase_price,
+        poi.total_price,
+        poi.purchase_date,
+        poi.created_at
+                    
+                FROM purchase_order_items poi LEFT JOIN purchase_orders_bill pob ON poi.purchase_order_bill_id =pob.id
+                LEFT JOIN po_main_category poc ON poi.product_main_category_id = poc.id
+                LEFT JOIN location loc ON poi.item_location_id =loc.id
+                LEFT JOIN uom ON poi.uom_id = uom.id";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();

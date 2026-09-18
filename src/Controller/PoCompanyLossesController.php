@@ -29,7 +29,6 @@ class PoCompanyLossesController
                 file_get_contents("php://input"),
                 true
             );
-
             if (!is_array($data)) {
                 Response::badRequest(
                     'Invalid request data'

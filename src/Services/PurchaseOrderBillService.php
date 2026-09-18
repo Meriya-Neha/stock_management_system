@@ -15,38 +15,8 @@ class PurchaseOrderBillService
 
         $this->purchaseOrderBillRepository =
             new PurchaseOrderBillRepository();
+        $this->validation=new validation();
     }
-
-    // public function createPurchaseOrderBill(
-    //     array $data,
-    //     ?array $file
-    // ) {
-    //     try {
-
-    //         $documentPath = null;
-
-    //         // File upload
-    //         if (
-    //             $file &&
-    //             $file['error'] === UPLOAD_ERR_OK
-    //         ) {
-
-    //             $documentPath = $this->uploadFile($file);
-    //         }
-
-    //         // DB me path store karne ke liye
-    //         $data['document'] = $documentPath;
-
-    //         // Repository
-    //         return $this->purchaseOrderBillRepository
-    //             ->createPurchaseOrderBill($data);
-
-    //     } catch (\Throwable $e) {
-
-    //         throw $e;
-    //     }
-    // }
-
     public function createPurchaseOrderBill(
         array $data,
         ?array $file
@@ -65,6 +35,7 @@ class PurchaseOrderBillService
             // DB me image ka path
             $data['bill_image'] = $billImagePath;
             $validation=$this->validation->Pobill($data);
+            print_r($data);
             $result= $this->purchaseOrderBillRepository
                 ->createPurchaseOrderBill($data);
 

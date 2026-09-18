@@ -22,14 +22,16 @@ class PoCompanyLossesRepository
                     purchase_order_item_id,
                     loss_quantity,
                     loss_amount,
-                    created_at
+                    created_at,
+                    total_losses
                 )
                 VALUES
                 (
                     :purchase_order_item_id,
                     :loss_quantity,
-                    :loss_amount,
-                    NOW()
+                    :total_losses,
+                    NOW(),
+                    :loss_amount
                 )";
 
         $stmt = $this->db->prepare($sql);
@@ -37,7 +39,8 @@ class PoCompanyLossesRepository
         $stmt->execute([
             ':purchase_order_item_id' => $data['purchase_order_item_id'],
             ':loss_quantity' => $data['loss_quantity'],
-            ':loss_amount' => $data['loss_amount']
+            ':loss_amount' => $data['loss_amount'],
+            ':total_losses'=>$data['total_losses']
         ]);
 
         $id = (int) $this->db->lastInsertId();

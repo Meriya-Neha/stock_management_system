@@ -91,25 +91,26 @@ class PurchaseOrderBillRepository
     public function getAll(): array
     {
         $sql = "SELECT
-                    id,
-                    supplier_id,
-                    invoice_no,
-                    bill_image,
-                    total_quantity,
-                    total_price,
-                    bill_date,
-                    remain_amount,
-                    payment_mode,
-                    transaction_ref_no,
-                    payment_date,
-                    notes,
-                    total_taxable_value,
-                    total_cgst,
-                    total_sgst,
-                    total_igst,
-                    grand_total,
-                    gst_rate
-                FROM purchase_orders_bill
+                    p.id,
+                    s.company_name AS company_name,
+                    p.invoice_no,
+                    p.bill_image,
+                    p.total_quantity,
+                    p.total_price,
+                    p.bill_date,
+                    p.remain_amount,
+                    p.payment_mode,
+                    p.transaction_ref_no,
+                    p.payment_date,
+                    p.notes,
+                    p.total_taxable_value,
+                    p.total_cgst,
+                    p.total_sgst,
+                    p.total_igst,
+                    p.grand_total,
+                    p.gst_rate
+                FROM purchase_orders_bill p
+                LEFT JOIN supplier s ON p.supplier_id = s.id
                 ORDER BY id DESC";
 
         $stmt = $this->db->prepare($sql);

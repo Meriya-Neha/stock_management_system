@@ -47,6 +47,7 @@ class PoOrderItemsService
      // GET ALL
     public function getAll(): array
     {
+        // echo("hello");
         return $this->repository->getAll();
     }
 

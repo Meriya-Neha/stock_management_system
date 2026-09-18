@@ -85,7 +85,7 @@ class AuthController{
         $accessToken = $this->jwtHelper->generateAccessToken([
             'id' => $userId
         ]);
-        echo("helllo");
+        // echo("helllo");
 
         // 9. Return new access token
         Response::success(
